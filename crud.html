@@ -31,18 +31,11 @@
             price: 30000,
         },
     ];
-    let count = 3;
-    let check = -1;
-    let deleteCheck = 0;
-
     function render() {
-        const list = document.querySelector("#list");
-        list.innerHTML = ""; 
-
-        for(let i=0;i<count; i++){
+        for(let i=0;i<products.length; i++){
             const list = document.querySelector("#list");
-
-            const product = i+1 + " " + products[i].name + " " + products[i].description + " " + products[i].category + " " + products[i].date + " " + products[i].price;
+            
+            const product = products[i].id + " " + products[i].name + " " + products[i].description + " " + products[i].category + " " + products[i].date + " " + products[i].price;
             const productValue = document.createElement("li");
             const editBtn = document.createElement("button");
             const removeBtn = document.createElement("button");
@@ -55,88 +48,40 @@
             productValue.appendChild(editBtn);
             productValue.appendChild(removeBtn);
             
-            editBtn.addEventListener("click", ()=>{
-                document.querySelector("#name").value = products[i].name;
-                document.querySelector("#description").value = products[i].description;
-                document.querySelector("#category").value = products[i].category;
-                document.querySelector("#date").value = products[i].date;
-                document.querySelector("#price").value = products[i].price;
-
-                check = i;
-            })
-            
+            editBtn.addEventListener("click", ()=>{eidt()})
 
             removeBtn.addEventListener("click", () => {
-                if(confirm("삭제하시겠습니까?")) {
-                products.splice(i, 1);
-                count--;
-                check=-1;
-                render();
-                } else {
-                    return
-                }
+                productValue.remove();
             })
         }
     }
-    
     window.addEventListener("load", () => {
-
         render();
-        const name = document.querySelector("#name");
-        const description = document.querySelector("#description");
-        const category = document.querySelector("#category");
-        const date = document.querySelector("#date");
-        const price = document.querySelector("#price");
+        const name = document.querySelector("name");
+        const description = document.querySelector("description");
+        const category = document.querySelector("category");
+        const date = document.querySelector("date");
+        const price = document.querySelector("price");
         const list = document.querySelector("#list");
         const addBtn = document.querySelector("#addBtn");
         
+        addBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            products.push({"id": products.length+1, "name": name.value, "description": description.value, "category": category.value, "date": date.value, "price":price.value})
+            const productName= products.length+1 + " " + name.value + " " + description.value + " " + category.value + " " +  date.value +" " + price.value;
+            const newProduct = document.createElement("li");
+            newProduct.textContent = productName;
+            list.appendChild(newProduct);
+             const editBtn = document.createElement("button");
+             const removeBtn = document.createElement("button");
 
-        addBtn.addEventListener("click", () => {
-            if(!name.checkValidity()){
-                name.focus();
-                return alert("이름을 입력하세요");
-            }
+            editBtn.textContent = '수정';
+            removeBtn.textContent= '제거';
 
-            if(!description.checkValidity()){
-                description.focus();
-                return alert("설명을 제대로 입력하세요");
-            }
-
-            if(!category.checkValidity()){
-                category.focus();
-                return alert("카테고리를 제대로 입력하세요");
-            }
+            newProduct.appendChild(editBtn);
+            newProduct.appendChild(removeBtn);
             
-            if(!date.checkValidity()){
-                date.focus();
-                return alert("날짜를 제대로 입력하세요");
-            }
-
-            if(!price.checkValidity()){
-                price.focus();
-                return alert("가격을 제대로 입력하세요");
-            }
-
-            if(check == -1){
-                products.push({"id": count+1, "name": name.value, "description": description.value, "category": category.value, "date": date.value, "price":price.value})
-                count++;
-            } else {
-                products[check].name = name.value;
-                products[check].description = description.value;
-                products[check].category = category.value;
-                products[check].date = date.value;
-                products[check].price = price.value;
-
-                check = -1;
-            }
-                render();
-
-
-                name.value = "";
-                description.value = "";
-                category.value = "";
-                date.value = "";
-                price.value = "";
+            newProduct.append()
         })
     })
     </script>
@@ -144,17 +89,17 @@
 <body>
     <form>
         <label>상품명</label>
-        <input type="text" id="name" required /><br>
+        <input id="name"  required/><br>
         <label>설명</label>
-        <input type="text" id="description" minlength="4" required/><br>
+        <input id="description" required /><br>
         <label>카테고리</label>
-        <input type="text" id="category" required /><br>
+        <input id="category" required /><br>
         <label>날짜</label>
-        <input type="date" id="date" required /><br>
+        <input id="date" required /><br>
         <label>가격</label>
-        <input type="number" id="price" min="1" required /><br>
+        <input id="price" required /><br>
             
-        <button type="submit" id="addBtn">ADD</button>
+        <button id="addBtn">ADD</button>
     </form>
 
     <h5>ID   제목          저자       카테고리     가격</h5>
