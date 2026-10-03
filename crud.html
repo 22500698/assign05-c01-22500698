@@ -4,6 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품관리</title>
+        <style>
+        body {
+            display: grid;
+            place-items: center;
+        }
+        input {
+            width: 200px;
+            height: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        input:hover {
+            border-color: blue;
+        }
+        ul {
+            text-align: center;
+        }
+        .editBtn {
+            margin-left: 10px;
+            border-radius: 5px;
+            margin-bottom: 4px;
+            background-color: rgb(8, 8, 255);
+            color: aliceblue;
+            border: none;
+        }
+
+        .removeBtn {
+            margin-left: 4px;
+            border-radius: 5px;
+            background-color: rgb(208, 32, 1);
+            color: aliceblue;
+            border: none;
+        }
+        
+        li {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        #addBtn {
+            margin-left: 90px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 100px;
+            height: 30px;
+            background-color: rgb(68, 56, 196);
+            border: none;
+            border-radius: 10px;
+            color: aliceblue;
+        }
+    </style>
     <script>
         let products = [
         {
@@ -50,6 +101,8 @@
             productValue.textContent = product;
             editBtn.textContent = '수정';
             removeBtn.textContent= '제거';
+            editBtn.className = "editBtn";
+            removeBtn.className = "removeBtn";
 
             list.appendChild(productValue);
             productValue.appendChild(editBtn);
@@ -138,20 +191,22 @@
                 price.value = "";
         })
     })
+    
     </script>
 </head>
 <body>
+    <h3>상품관리</h3>
     <form>
         <label>상품명</label>
-        <input type="text" id="name" required /><br>
+        <input type="text" id="name" placeholder="상품명을 입력하세요" required /><br>
         <label>설명</label>
-        <input type="text" id="description" minlength="4" required/><br>
+        <input type="text" id="description" placeholder="상품설명을 입력하세요" minlength="4" required/><br>
         <label>카테고리</label>
-        <input type="text" id="category" required /><br>
+        <input type="text" id="category" placeholder="카테고리를 입력하세요" required /><br>
         <label>날짜</label>
         <input type="date" id="date" required /><br>
         <label>가격</label>
-        <input type="number" id="price" min="1" required /><br>
+        <input type="number" id="price" min="1" required placeholder="가격을 입력하세요"/><br>
             
         <button type="submit" id="addBtn">ADD</button>
     </form>
