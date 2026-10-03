@@ -32,9 +32,12 @@
         },
     ];
     function render() {
+        const list = document.querySelector("#list");
+        list.innerHTML = ""; 
+
         for(let i=0;i<products.length; i++){
             const list = document.querySelector("#list");
-            
+
             const product = products[i].id + " " + products[i].name + " " + products[i].description + " " + products[i].category + " " + products[i].date + " " + products[i].price;
             const productValue = document.createElement("li");
             const editBtn = document.createElement("button");
@@ -48,10 +51,22 @@
             productValue.appendChild(editBtn);
             productValue.appendChild(removeBtn);
             
-            editBtn.addEventListener("click", ()=>{eidt()})
+            editBtn.addEventListener("click", ()=>{
+                editBtn.addEventListener("click", () => {
+                document.querySelector("#name").value = products[i].name;
+                document.querySelector("#description").value = products[i].description;
+                document.querySelector("#category").value = products[i].category;
+                document.querySelector("#date").value = products[i].date;
+                document.querySelector("#price").value = products[i].price;
+
+                editIndex = i;
+})
+            })
 
             removeBtn.addEventListener("click", () => {
-                productValue.remove();
+                products = products.filter(products => products.id !== products[i].id);
+                
+                render();
             })
         }
     }
@@ -109,21 +124,28 @@
             newProduct.appendChild(removeBtn);
             
             editBtn.addEventListener("click", ()=>{
-                const editProduction = newProduct.value.split(" ");
-                name.value = editProduction[1];
-                description.value = editProduction[2];
-                category.value = editProduction[3];
-                date.value = editProduction[4];
-                price.value = editProduction[5];
+                 const name = document.querySelector("#name");
+                const description = document.querySelector("#description");
+                const category = document.querySelector("#category");
+                const date = document.querySelector("#date");
+                const price = document.querySelector("#price");
+
+                const editProduction = products.length - 1;
+                
+                name.value = products[editProduction].name;
+                description.value = products[editProduction].description;
+                category.value = products[editProduction].category;
+                date.value = products[editProduction].date;
+                price.value = products[editProduction].price;
 
                 addBtn.addEventListener("click", () => {
-                    products[editProduction[0]].name.value = name.value;
-                    products[editProduction[0]].description.value = description.value;
-                    products[editProduction[0]].category.value = category.value;
-                    products[editProduction[0]].date.value = date.value;
-                    products[editProduction[0]].price.value = price.value;
+                    products[editProduction].name = name.value;
+                    products[editProduction].description = description.value;
+                    products[editProduction].category = category.value;
+                    products[editProduction].date = date.value;
+                    products[editProduction].price = price.value;
                     
-                    
+                    render();
                 })
             })
 
