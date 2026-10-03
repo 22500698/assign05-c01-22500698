@@ -79,7 +79,7 @@
         }
     }
     
-    window.addEventListener("load", (e) => {
+    window.addEventListener("load", () => {
 
         render();
         const name = document.querySelector("#name");
@@ -87,7 +87,6 @@
         const category = document.querySelector("#category");
         const date = document.querySelector("#date");
         const price = document.querySelector("#price");
-        const list = document.querySelector("#list");
         const addBtn = document.querySelector("#addBtn");
         
 
@@ -128,6 +127,7 @@
                 products[check].price = price.value;
 
                 check = -1;
+            }
                 render();
 
 
@@ -136,54 +136,6 @@
                 category.value = "";
                 date.value = "";
                 price.value = "";
-
-                return
-            }
-
-            const editProduction = products.length - 1;
-            const productName= count + " " + name.value + " " + description.value + " " + category.value + " " +  date.value +" " + price.value;
-            const newProduct = document.createElement("li");
-            newProduct.textContent = productName;
-            list.appendChild(newProduct);
-            const editBtn = document.createElement("button");
-            const removeBtn = document.createElement("button");
-
-            editBtn.textContent = '수정';
-            removeBtn.textContent= '제거';
-
-            newProduct.appendChild(editBtn);
-            newProduct.appendChild(removeBtn);
-            
-            editBtn.addEventListener("click", ()=>{
-                const name = document.querySelector("#name");
-                const description = document.querySelector("#description");
-                const category = document.querySelector("#category");
-                const date = document.querySelector("#date");
-                const price = document.querySelector("#price");
-                
-                name.value = products[editProduction].name;
-                description.value = products[editProduction].description;
-                category.value = products[editProduction].category;
-                date.value = products[editProduction].date;
-                price.value = products[editProduction].price;
-
-                check = editProduction;
-            })
-
-            removeBtn.addEventListener("click", () => {
-                if(confirm("삭제하시겠습니까?")) {
-                    products.splice(editProduction, 1);
-                    count--;
-                    check = -1;
-                    render();
-                } else {return}
-            })
-
-            name.value = "";
-            description.value = "";
-            category.value = "";
-            date.value = "";
-            price.value = "";
         })
     })
     </script>
