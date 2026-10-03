@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품관리</title>
+    <script>
+        let products = [
+        {
+            id: 1,
+            name: "맥북 에어",
+            description: "가볍고 빠른 노트북",
+            category: "노트북",
+            date: "2026-10-01",
+            price: 10000,
+        },
+        {
+            id: 2,
+            name: "아이패드",
+            description: "휴대성이 좋은 태블릿",
+            category: "태블릿",
+            date: "2026-10-02",
+            price: 20000,
+        },
+        {
+            id: 3,
+            name: "에어팟",
+            description: "무선 블루투스 이어폰",
+            category: "이어폰",
+            date: "2026-10-03",
+            price: 30000,
+        },
+    ];
+    let count = 3;
+    let check = -1;
+    let deleteCheck = 0;
+
+    function render() {
+        const list = document.querySelector("#list");
+        list.innerHTML = ""; 
+
+        for(let i=0;i<count; i++){
+            const list = document.querySelector("#list");
+
+            const product = i+1 + " " + products[i].name + " " + products[i].description + " " + products[i].category + " " + products[i].date + " " + products[i].price;
+            const productValue = document.createElement("li");
+            const editBtn = document.createElement("button");
+            const removeBtn = document.createElement("button");
+
+            productValue.textContent = product;
+            editBtn.textContent = '수정';
+            removeBtn.textContent= '제거';
+
+            list.appendChild(productValue);
+            productValue.appendChild(editBtn);
+            productValue.appendChild(removeBtn);
+            
+            editBtn.addEventListener("click", ()=>{
+                document.querySelector("#name").value = products[i].name;
+                document.querySelector("#description").value = products[i].description;
+                document.querySelector("#category").value = products[i].category;
+                document.querySelector("#date").value = products[i].date;
+                document.querySelector("#price").value = products[i].price;
+
+                check = i;
+            })
+            
+
+            removeBtn.addEventListener("click", () => {
+                if(confirm("삭제하시겠습니까?")) {
+                products.splice(i, 1);
+                count--;
+                check=-1;
+                render();
+                } else {
+                    return
+                }
+            })
+        }
+    }
+    
+    window.addEventListener("load", () => {
+
+        render();
+        const name = document.querySelector("#name");
+        const description = document.querySelector("#description");
+        const category = document.querySelector("#category");
+        const date = document.querySelector("#date");
+        const price = document.querySelector("#price");
+        const list = document.querySelector("#list");
+        const addBtn = document.querySelector("#addBtn");
+        
+
+        addBtn.addEventListener("click", () => {
+            if(!name.checkValidity()){
+                name.focus();
+                return alert("이름을 입력하세요");
+            }
+
+            if(!description.checkValidity()){
+                description.focus();
+                return alert("설명을 제대로 입력하세요");
+            }
+
+            if(!category.checkValidity()){
+                category.focus();
+                return alert("카테고리를 제대로 입력하세요");
+            }
+            
+            if(!date.checkValidity()){
+                date.focus();
+                return alert("날짜를 제대로 입력하세요");
+            }
+
+            if(!price.checkValidity()){
+                price.focus();
+                return alert("가격을 제대로 입력하세요");
+            }
+
+            if(check == -1){
+                products.push({"id": count+1, "name": name.value, "description": description.value, "category": category.value, "date": date.value, "price":price.value})
+                count++;
+            } else {
+                products[check].name = name.value;
+                products[check].description = description.value;
+                products[check].category = category.value;
+                products[check].date = date.value;
+                products[check].price = price.value;
+
+                check = -1;
+            }
+                render();
+
+
+                name.value = "";
+                description.value = "";
+                category.value = "";
+                date.value = "";
+                price.value = "";
+        })
+    })
+    </script>
+</head>
+<body>
+    <form>
+        <label>상품명</label>
+        <input type="text" id="name" required /><br>
+        <label>설명</label>
+        <input type="text" id="description" minlength="4" required/><br>
+        <label>카테고리</label>
+        <input type="text" id="category" required /><br>
+        <label>날짜</label>
+        <input type="date" id="date" required /><br>
+        <label>가격</label>
+        <input type="number" id="price" min="1" required /><br>
+            
+        <button type="submit" id="addBtn">ADD</button>
+    </form>
+
+    <h5>ID   제목          저자       카테고리     가격</h5>
+    <ul id="list"></ul>
+</body>
+</html>
