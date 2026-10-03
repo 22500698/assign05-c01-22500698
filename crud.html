@@ -31,14 +31,18 @@
             price: 30000,
         },
     ];
+    let count = 3;
+    let check = -1;
+    let deleteCheck = 0;
+
     function render() {
         const list = document.querySelector("#list");
         list.innerHTML = ""; 
 
-        for(let i=0;i<products.length; i++){
+        for(let i=0;i<count; i++){
             const list = document.querySelector("#list");
 
-            const product = products[i].id + " " + products[i].name + " " + products[i].description + " " + products[i].category + " " + products[i].date + " " + products[i].price;
+            const product = i+1 + " " + products[i].name + " " + products[i].description + " " + products[i].category + " " + products[i].date + " " + products[i].price;
             const productValue = document.createElement("li");
             const editBtn = document.createElement("button");
             const removeBtn = document.createElement("button");
@@ -52,24 +56,29 @@
             productValue.appendChild(removeBtn);
             
             editBtn.addEventListener("click", ()=>{
-                editBtn.addEventListener("click", () => {
                 document.querySelector("#name").value = products[i].name;
                 document.querySelector("#description").value = products[i].description;
                 document.querySelector("#category").value = products[i].category;
                 document.querySelector("#date").value = products[i].date;
                 document.querySelector("#price").value = products[i].price;
 
-                editIndex = i;
-})
+                check = i;
             })
+            
 
             removeBtn.addEventListener("click", () => {
-                products = products.filter(products => products.id !== products[i].id);
-                
+                if(confirm("삭제하시겠습니까?")) {
+                products.splice(i, 1);
+                count--;
+                check=-1;
                 render();
+                } else {
+                    return
+                }
             })
         }
     }
+    
     window.addEventListener("load", (e) => {
 
         render();
@@ -83,7 +92,6 @@
         
 
         addBtn.addEventListener("click", () => {
-
             if(!name.checkValidity()){
                 name.focus();
                 return alert("이름을 입력하세요");
@@ -109,8 +117,31 @@
                 return alert("가격을 제대로 입력하세요");
             }
 
-            products.push({"id": products.length+1, "name": name.value, "description": description.value, "category": category.value, "date": date.value, "price":price.value})
-            const productName= products.length + " " + name.value + " " + description.value + " " + category.value + " " +  date.value +" " + price.value;
+            if(check == -1){
+                products.push({"id": count+1, "name": name.value, "description": description.value, "category": category.value, "date": date.value, "price":price.value})
+                count++;
+            } else {
+                products[check].name = name.value;
+                products[check].description = description.value;
+                products[check].category = category.value;
+                products[check].date = date.value;
+                products[check].price = price.value;
+
+                check = -1;
+                render();
+
+
+                name.value = "";
+                description.value = "";
+                category.value = "";
+                date.value = "";
+                price.value = "";
+
+                return
+            }
+
+            const editProduction = products.length - 1;
+            const productName= count + " " + name.value + " " + description.value + " " + category.value + " " +  date.value +" " + price.value;
             const newProduct = document.createElement("li");
             newProduct.textContent = productName;
             list.appendChild(newProduct);
@@ -124,13 +155,11 @@
             newProduct.appendChild(removeBtn);
             
             editBtn.addEventListener("click", ()=>{
-                 const name = document.querySelector("#name");
+                const name = document.querySelector("#name");
                 const description = document.querySelector("#description");
                 const category = document.querySelector("#category");
                 const date = document.querySelector("#date");
                 const price = document.querySelector("#price");
-
-                const editProduction = products.length - 1;
                 
                 name.value = products[editProduction].name;
                 description.value = products[editProduction].description;
@@ -138,19 +167,16 @@
                 date.value = products[editProduction].date;
                 price.value = products[editProduction].price;
 
-                addBtn.addEventListener("click", () => {
-                    products[editProduction].name = name.value;
-                    products[editProduction].description = description.value;
-                    products[editProduction].category = category.value;
-                    products[editProduction].date = date.value;
-                    products[editProduction].price = price.value;
-                    
-                    render();
-                })
+                check = editProduction;
             })
 
             removeBtn.addEventListener("click", () => {
-                newProduct.remove();
+                if(confirm("삭제하시겠습니까?")) {
+                    products.splice(editProduction, 1);
+                    count--;
+                    check = -1;
+                    render();
+                } else {return}
             })
 
             name.value = "";
@@ -173,9 +199,9 @@
         <label>날짜</label>
         <input type="date" id="date" required /><br>
         <label>가격</label>
-        <input type="number" id="price" required /><br>
+        <input type="number" id="price" min="1" required /><br>
             
-        <button type="button"id="addBtn">ADD</button>
+        <button type="submit" id="addBtn">ADD</button>
     </form>
 
     <h5>ID   제목          저자       카테고리     가격</h5>
