@@ -55,25 +55,52 @@
             })
         }
     }
-    window.addEventListener("load", () => {
+    window.addEventListener("load", (e) => {
+
         render();
-        const name = document.querySelector("name");
-        const description = document.querySelector("description");
-        const category = document.querySelector("category");
-        const date = document.querySelector("date");
-        const price = document.querySelector("price");
+        const name = document.querySelector("#name");
+        const description = document.querySelector("#description");
+        const category = document.querySelector("#category");
+        const date = document.querySelector("#date");
+        const price = document.querySelector("#price");
         const list = document.querySelector("#list");
         const addBtn = document.querySelector("#addBtn");
         
-        addBtn.addEventListener("click", (e) => {
-            e.preventDefault();
+
+        addBtn.addEventListener("click", () => {
+
+            if(!name.checkValidity()){
+                name.focus();
+                return alert("이름을 입력하세요");
+            }
+
+            if(!description.checkValidity()){
+                description.focus();
+                return alert("설명을 제대로 입력하세요");
+            }
+
+            if(!category.checkValidity()){
+                category.focus();
+                return alert("카테고리를 제대로 입력하세요");
+            }
+            
+            if(!date.checkValidity()){
+                date.focus();
+                return alert("날짜를 제대로 입력하세요");
+            }
+
+            if(!price.checkValidity()){
+                price.focus();
+                return alert("가격을 제대로 입력하세요");
+            }
+
             products.push({"id": products.length+1, "name": name.value, "description": description.value, "category": category.value, "date": date.value, "price":price.value})
-            const productName= products.length+1 + " " + name.value + " " + description.value + " " + category.value + " " +  date.value +" " + price.value;
+            const productName= products.length + " " + name.value + " " + description.value + " " + category.value + " " +  date.value +" " + price.value;
             const newProduct = document.createElement("li");
             newProduct.textContent = productName;
             list.appendChild(newProduct);
-             const editBtn = document.createElement("button");
-             const removeBtn = document.createElement("button");
+            const editBtn = document.createElement("button");
+            const removeBtn = document.createElement("button");
 
             editBtn.textContent = '수정';
             removeBtn.textContent= '제거';
@@ -81,7 +108,34 @@
             newProduct.appendChild(editBtn);
             newProduct.appendChild(removeBtn);
             
-            newProduct.append()
+            editBtn.addEventListener("click", ()=>{
+                const editProduction = newProduct.value.split(" ");
+                name.value = editProduction[1];
+                description.value = editProduction[2];
+                category.value = editProduction[3];
+                date.value = editProduction[4];
+                price.value = editProduction[5];
+
+                addBtn.addEventListener("click", () => {
+                    products[editProduction[0]].name.value = name.value;
+                    products[editProduction[0]].description.value = description.value;
+                    products[editProduction[0]].category.value = category.value;
+                    products[editProduction[0]].date.value = date.value;
+                    products[editProduction[0]].price.value = price.value;
+                    
+                    
+                })
+            })
+
+            removeBtn.addEventListener("click", () => {
+                newProduct.remove();
+            })
+
+            name.value = "";
+            description.value = "";
+            category.value = "";
+            date.value = "";
+            price.value = "";
         })
     })
     </script>
@@ -89,17 +143,17 @@
 <body>
     <form>
         <label>상품명</label>
-        <input id="name"  required/><br>
+        <input type="text" id="name" required /><br>
         <label>설명</label>
-        <input id="description" required /><br>
+        <input type="text" id="description" minlength="4" required/><br>
         <label>카테고리</label>
-        <input id="category" required /><br>
+        <input type="text" id="category" required /><br>
         <label>날짜</label>
-        <input id="date" required /><br>
+        <input type="date" id="date" required /><br>
         <label>가격</label>
-        <input id="price" required /><br>
+        <input type="number" id="price" required /><br>
             
-        <button id="addBtn">ADD</button>
+        <button type="button"id="addBtn">ADD</button>
     </form>
 
     <h5>ID   제목          저자       카테고리     가격</h5>
